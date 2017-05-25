@@ -1,0 +1,8 @@
+<div class="container mt-3" style="text-align:center">
+    <h1>웹툰 이름이 잘못됐나요?(그럴일 없음 ㅋ)</h1>
+    <form action="/webtoon/update/<%= @some_webtoon.id %>" method="post">
+        <input type="text" name="content" value="<%= @some_webtoon.content %>">
+        <input type="submit" value="제출">
+    </form>
+</div>
+
