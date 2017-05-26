@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20170525052638) do
 
   create_table "lists", force: :cascade do |t|
     t.text     "content"
+    t.text     "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

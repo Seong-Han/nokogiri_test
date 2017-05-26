@@ -1,34 +1,43 @@
 class WebtoonController < ApplicationController
   def index
-     #요일 db 작업하는 곳 하지만 요일에 넣는 걸 실패서 노의미 
-     yoil = ["월","화","수","목","금","토","일"]
-     yoil.each do |x|
-       days = Webtoon.new
-       days.day = x 
-       days.save
-    end
-    #요일별 웹툰 작업하는 곳
-    #webtoon_list db가 뭔가 잘못된듯 이따 확인하자
-    
     require 'open-uri'
     doc = Nokogiri::HTML(open("http://comic.naver.com/webtoon/weekday.nhn"))
     webtoon_content = Array.new
-    
-    if List.count == 0
+    webtoon_image = Array.new
+
+  if List.count == 0
+    #이름
          doc.css('div.list_area.daily_all > div.col>div.col_inner > ul > li > a').each do |y|
                 webtoon_content.push(y.text())
          end
+    #url     
+         doc.css('div.list_area.daily_all > div.col>div.col_inner > ul > li > div.thumb').each do |x|
+             count = 0
+             x.css('a > img').each do |y|
+                 if count>0
+                   break
+                 else
+                  webtoon_image.push(y.attr('src'))
+                  count += 1
+                 end
+             end
+         end
+  end  
+   
+    
+     count = webtoon_content.length
+     for i in (0..count-1)
+      webtoon = List.new
+      webtoon.content = webtoon_content[i]
+      webtoon.url = webtoon_image[i]
+      webtoon.save
      end
-     
-     webtoon_content.each do |y|
-         lists = List.new
-         lists.content = y
-         lists.save
-     end
-     
+   
+
      @content = List.all
+  
      
-         
+      
          
   end
 
